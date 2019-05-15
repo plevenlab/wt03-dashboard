@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Device;
+use App\Models\DeviceState;
 
-class DeviceController extends Controller
+class DeviceStatesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class DeviceController extends Controller
      */
     public function index()
     {
-        return Device::with('state')->get();
+        return DeviceState::all();
     }
 
     /**
@@ -34,10 +34,10 @@ class DeviceController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $device = new Device();
-        $device->fill($data);
+        $deviceState = new DeviceState();
+        $deviceState->fill($data);
 
-        return $device->isValid();
+        return $deviceState->isValid();
     }
 
     /**
@@ -48,7 +48,7 @@ class DeviceController extends Controller
      */
     public function show($id)
     {
-        return Device::with('state')->get()->find($id);
+        return DeviceState::find($id);
     }
 
     /**
@@ -59,7 +59,7 @@ class DeviceController extends Controller
      */
     public function edit($id)
     {
-        return Device::with('state')->get()->find($id);
+        return DeviceState::find($id);
     }
 
     /**
@@ -72,10 +72,10 @@ class DeviceController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->all();
-        $device = Device::find($id);
-        $device->fill($data);
+        $deviceState = DeviceState::find($id);
+        $deviceState->fill($data);
 
-        return $device->isValid();
+        return $deviceState->isValid();
     }
 
     /**
@@ -86,6 +86,6 @@ class DeviceController extends Controller
      */
     public function destroy($id)
     {
-        Device::destroy($id);
+        DeviceState::destroy($id);
     }
 }
