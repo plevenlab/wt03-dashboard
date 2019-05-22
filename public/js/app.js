@@ -1790,9 +1790,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ["listName"],
   data: function data() {
     return {
       headers: [{
@@ -1867,6 +1874,10 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
     },
     edit: function edit(id) {
       this.$emit("edit", id);
+    },
+    add: function add(id) {
+      console.log(1);
+      this.$emit("add", id);
     }
   },
   mounted: function mounted() {
@@ -1910,22 +1921,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       dialog: false,
-      popupName: ""
+      popupName: "",
+      dialogId: "",
+      tabNames: ["Provisioned", "Discovered"]
     };
   },
   methods: {
-    openDialog: function openDialog(name) {
+    openDialog: function openDialog(name, id) {
       this.popupName = name;
       this.dialog = true;
+      this.dialogId = id;
     },
     closeDialog: function closeDialog() {
       this.dialog = false;
+    },
+    edit: function edit(id) {
+      this.openDialog("Edit", id);
+    },
+    add: function add(id) {
+      this.openDialog("Add", id);
     }
   },
   components: {
@@ -1992,11 +2027,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["open", "name"],
+  props: ["open", "name", "id"],
   data: function data() {
     return {
       dialog: false,
@@ -37940,6 +37972,8 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("h2", { staticClass: "py-3" }, [_vm._v(_vm._s(_vm.listName))]),
+      _vm._v(" "),
       _c("v-data-table", {
         staticClass: "elevation-1",
         attrs: { headers: _vm.headers, items: _vm.devices, "hide-actions": "" },
@@ -37995,19 +38029,51 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c(
-                      "v-btn",
-                      {
-                        attrs: { fab: "", dark: "", small: "", color: "teal" },
-                        on: {
-                          click: function($event) {
-                            return _vm.edit(props.item.id)
-                          }
-                        }
-                      },
-                      [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("edit")])],
-                      1
-                    )
+                    _vm.listName == "Provisioned"
+                      ? _c(
+                          "v-btn",
+                          {
+                            attrs: {
+                              fab: "",
+                              dark: "",
+                              small: "",
+                              color: "teal"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.edit(props.item.id)
+                              }
+                            }
+                          },
+                          [
+                            _c("v-icon", { attrs: { dark: "" } }, [
+                              _vm._v("edit")
+                            ])
+                          ],
+                          1
+                        )
+                      : _c(
+                          "v-btn",
+                          {
+                            attrs: {
+                              fab: "",
+                              dark: "",
+                              small: "",
+                              color: "indigo"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.add(props.item.id)
+                              }
+                            }
+                          },
+                          [
+                            _c("v-icon", { attrs: { dark: "" } }, [
+                              _vm._v("add")
+                            ])
+                          ],
+                          1
+                        )
                   ],
                   1
                 )
@@ -38048,31 +38114,8 @@ var render = function() {
       _c(
         "v-app",
         [
-          _c(
-            "v-toolbar",
-            { staticClass: "pa-2", attrs: { app: "" } },
-            [
-              _c("v-spacer"),
-              _vm._v(" "),
-              _c(
-                "v-btn",
-                {
-                  attrs: { fab: "", dark: "", color: "indigo" },
-                  on: {
-                    click: function($event) {
-                      return _vm.openDialog("Add")
-                    }
-                  }
-                },
-                [_c("v-icon", { attrs: { dark: "" } }, [_vm._v("add")])],
-                1
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
           _c("Popup", {
-            attrs: { open: _vm.dialog, name: _vm.popupName },
+            attrs: { id: _vm.dialogId, open: _vm.dialog, name: _vm.popupName },
             on: {
               close: function($event) {
                 return _vm.closeDialog()
@@ -38081,9 +38124,106 @@ var render = function() {
           }),
           _vm._v(" "),
           _c(
-            "v-content",
-            { staticClass: "mt-5" },
-            [_c("v-container", { attrs: { fluid: "" } }, [_c("List")], 1)],
+            "v-container",
+            { attrs: { fluid: "" } },
+            [
+              _c(
+                "v-card",
+                { staticClass: "py-5" },
+                [
+                  _c(
+                    "v-layout",
+                    { attrs: { row: "" } },
+                    [
+                      _c(
+                        "v-flex",
+                        { attrs: { lg10: "", "offset-lg1": "", "pa-1": "" } },
+                        [
+                          _c(
+                            "v-tabs",
+                            {
+                              attrs: {
+                                color: "cyan",
+                                dark: "",
+                                "slider-color": "yellow"
+                              },
+                              model: {
+                                value: _vm.active,
+                                callback: function($$v) {
+                                  _vm.active = $$v
+                                },
+                                expression: "active"
+                              }
+                            },
+                            [
+                              _vm._l(_vm.tabNames, function(tab, index) {
+                                return _c("v-tab", { key: index }, [
+                                  _vm._v(_vm._s(tab))
+                                ])
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "v-tab-item",
+                                [
+                                  _c(
+                                    "v-content",
+                                    { staticClass: "mt-5" },
+                                    [
+                                      _c(
+                                        "v-container",
+                                        { attrs: { fluid: "" } },
+                                        [
+                                          _c("List", {
+                                            attrs: { listName: "Provisioned" },
+                                            on: { edit: _vm.edit }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-tab-item",
+                                [
+                                  _c(
+                                    "v-content",
+                                    { staticClass: "mt-5" },
+                                    [
+                                      _c(
+                                        "v-container",
+                                        { attrs: { fluid: "" } },
+                                        [
+                                          _c("List", {
+                                            attrs: { listName: "Discovered" },
+                                            on: { add: _vm.add }
+                                          })
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            2
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
             1
           ),
           _vm._v(" "),
@@ -38125,21 +38265,6 @@ var render = function() {
         "hide-overlay": "",
         transition: "dialog-bottom-transition"
       },
-      scopedSlots: _vm._u([
-        {
-          key: "activator",
-          fn: function(ref) {
-            var on = ref.on
-            return [
-              _c(
-                "v-btn",
-                _vm._g({ attrs: { color: "primary", dark: "" } }, on),
-                [_vm._v("Open Dialog")]
-              )
-            ]
-          }
-        }
-      ]),
       model: {
         value: _vm.dialog,
         callback: function($$v) {
@@ -38149,7 +38274,6 @@ var render = function() {
       }
     },
     [
-      _vm._v(" "),
       _c(
         "v-card",
         [
@@ -38171,7 +38295,10 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("v-toolbar-title", [_vm._v(_vm._s(_vm.name) + " divice")]),
+              _c("v-toolbar-title", [
+                _vm._v(_vm._s(_vm.name) + " divice "),
+                _vm.id ? _c("span", [_vm._v(_vm._s(_vm.id))]) : _vm._e()
+              ]),
               _vm._v(" "),
               _c("v-spacer"),
               _vm._v(" "),

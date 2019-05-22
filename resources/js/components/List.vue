@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h2 class="py-3">{{listName}}</h2>
+
     <v-data-table :headers="headers" :items="devices" class="elevation-1" hide-actions>
       <template v-slot:items="props">
         <td>{{ props.item.id }}</td>
@@ -16,8 +18,12 @@
             <v-icon dark>remove</v-icon>
           </v-btn>
 
-          <v-btn fab dark small color="teal" @click="edit(props.item.id)">
+          <v-btn v-if="listName == 'Provisioned'" fab dark small color="teal" @click="edit(props.item.id)">
             <v-icon dark>edit</v-icon>
+          </v-btn>
+
+          <v-btn v-else fab dark small color="indigo" @click="add(props.item.id)">
+            <v-icon dark>add</v-icon>
           </v-btn>
         </td>
       </template>
@@ -29,6 +35,7 @@
 const axios = require("axios");
 
 export default {
+  props: ["listName"],
   data() {
     return {
       headers: [
@@ -127,6 +134,11 @@ export default {
     },
     edit(id) {
       this.$emit("edit", id);
+    },
+    add(id) {
+      console.log(1);
+      
+      this.$emit("add", id);
     }
   },
   mounted() {
