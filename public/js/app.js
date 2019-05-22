@@ -38295,10 +38295,7 @@ var render = function() {
                 1
               ),
               _vm._v(" "),
-              _c("v-toolbar-title", [
-                _vm._v(_vm._s(_vm.name) + " divice "),
-                _vm.id ? _c("span", [_vm._v(_vm._s(_vm.id))]) : _vm._e()
-              ]),
+              _c("v-toolbar-title", [_vm._v(_vm._s(_vm.name) + " device")]),
               _vm._v(" "),
               _c("v-spacer"),
               _vm._v(" "),

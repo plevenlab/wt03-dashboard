@@ -5,7 +5,7 @@
         <v-btn icon dark @click="closeDialog()">
           <v-icon>close</v-icon>
         </v-btn>
-        <v-toolbar-title>{{name}} divice <span v-if="id">{{id}}</span></v-toolbar-title>
+        <v-toolbar-title>{{name}} device</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>
           <v-btn dark flat @click="dialog = false">Save</v-btn>
