@@ -46,7 +46,8 @@ export default {
       dialog: false,
       popupName: "",
       dialogId: "",
-      tabNames: ["Provisioned", "Discovered"]
+      tabNames: ["Provisioned", "Discovered"],
+      active:"",
     };
   },
   methods: {

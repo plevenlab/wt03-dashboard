@@ -10,6 +10,7 @@
         <td class="text-xs-left">{{ props.item.device }}</td>
         <td class="text-xs-left">{{ props.item.chip_id }}</td>
         <td class="text-xs-left">{{ props.item.wifi_mac }}</td>
+        <td class="text-xs-left">{{ props.item.state_id }}</td>
         <td class="text-xs-left">{{ props.item.created_at }}</td>
         <td class="text-xs-left">{{ props.item.updated_at }}</td>
 
@@ -82,6 +83,13 @@ export default {
         },
 
         {
+          text: "status",
+          align: "left",
+          sortable: false,
+          value: "status"
+        },
+
+        {
           text: "created_at",
           align: "left",
           sortable: false,
@@ -102,18 +110,7 @@ export default {
           value: "action"
         }
       ],
-      devices: [
-        {
-          id: "1",
-          name: "test",
-          address: "addres",
-          device: "device",
-          chip_id: "chip_id",
-          wifi_mac: "wifi_mac",
-          created_at: "created_at",
-          updated_at: "updated_at"
-        }
-      ]
+      devices: []
     };
   },
   methods: {

@@ -1796,6 +1796,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1833,6 +1834,11 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
         sortable: false,
         value: "wifi_mac"
       }, {
+        text: "status",
+        align: "left",
+        sortable: false,
+        value: "status"
+      }, {
         text: "created_at",
         align: "left",
         sortable: false,
@@ -1848,16 +1854,7 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
         sortable: false,
         value: "action"
       }],
-      devices: [{
-        id: "1",
-        name: "test",
-        address: "addres",
-        device: "device",
-        chip_id: "chip_id",
-        wifi_mac: "wifi_mac",
-        created_at: "created_at",
-        updated_at: "updated_at"
-      }]
+      devices: []
     };
   },
   methods: {
@@ -1944,7 +1941,8 @@ __webpack_require__.r(__webpack_exports__);
       dialog: false,
       popupName: "",
       dialogId: "",
-      tabNames: ["Provisioned", "Discovered"]
+      tabNames: ["Provisioned", "Discovered"],
+      active: ""
     };
   },
   methods: {
@@ -2027,6 +2025,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["open", "name", "id"],
   data: function data() {
@@ -2037,8 +2037,17 @@ __webpack_require__.r(__webpack_exports__);
       widgets: false,
       deviceName: "",
       address: "",
-      device: ""
+      device: "",
+      status_id: "",
+      chip_id: "",
+      wifi_mac: "",
+      manufacturer: ""
     };
+  },
+  computed: {
+    status: function status() {
+      return this.name == "Add" ? 1 : this.status_id;
+    }
   },
   watch: {
     open: function open(val) {
@@ -2049,6 +2058,22 @@ __webpack_require__.r(__webpack_exports__);
     closeDialog: function closeDialog() {
       this.dialog = false;
       this.$emit("close");
+    },
+    save: function save() {
+      var self = this;
+      axios.post("/devices", {
+        address: self.address,
+        name: self.name,
+        device: self.device,
+        state_id: self.status_id ? self.status_id : self.status,
+        manufacturer: self.manufacturer,
+        wifi_mac: self.wifi_mac,
+        chip_id: self.chip_id
+      }).then(function (res) {
+        console.log(res);
+      })["catch"](function (err) {
+        console.log(err);
+      });
     }
   }
 });
@@ -38005,6 +38030,10 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("td", { staticClass: "text-xs-left" }, [
+                  _vm._v(_vm._s(props.item.state_id))
+                ]),
+                _vm._v(" "),
+                _c("td", { staticClass: "text-xs-left" }, [
                   _vm._v(_vm._s(props.item.created_at))
                 ]),
                 _vm._v(" "),
@@ -38308,7 +38337,7 @@ var render = function() {
                       attrs: { dark: "", flat: "" },
                       on: {
                         click: function($event) {
-                          _vm.dialog = false
+                          return _vm.save()
                         }
                       }
                     },
@@ -38329,6 +38358,7 @@ var render = function() {
                 [
                   _c(
                     "v-layout",
+                    { attrs: { row: "", wrap: "" } },
                     [
                       _c(
                         "v-flex",
@@ -38378,6 +38408,60 @@ var render = function() {
                                 _vm.device = $$v
                               },
                               expression: "device"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { attrs: { xs12: "", md4: "" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Chip Id" },
+                            model: {
+                              value: _vm.chip_id,
+                              callback: function($$v) {
+                                _vm.chip_id = $$v
+                              },
+                              expression: "chip_id"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { attrs: { xs12: "", md4: "" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "Manufacturer" },
+                            model: {
+                              value: _vm.manufacturer,
+                              callback: function($$v) {
+                                _vm.manufacturer = $$v
+                              },
+                              expression: "manufacturer"
+                            }
+                          })
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-flex",
+                        { attrs: { xs12: "", md4: "" } },
+                        [
+                          _c("v-text-field", {
+                            attrs: { label: "wifi_mac" },
+                            model: {
+                              value: _vm.wifi_mac,
+                              callback: function($$v) {
+                                _vm.wifi_mac = $$v
+                              },
+                              expression: "wifi_mac"
                             }
                           })
                         ],
