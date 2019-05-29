@@ -19,7 +19,7 @@
             <v-icon dark>remove</v-icon>
           </v-btn>
 
-          <v-btn v-if="listName == 'Provisioned'" fab dark small color="teal" @click="edit(props.item.id)">
+          <v-btn v-if="listName == 'Devices'" fab dark small color="teal" @click="edit(props.item.id)">
             <v-icon dark>edit</v-icon>
           </v-btn>
 

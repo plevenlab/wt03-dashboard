@@ -1,31 +1,22 @@
 <template>
   <div>
     <v-app>
-
       <Popup :id="dialogId" :open="dialog" :name="popupName" @close="closeDialog()"></Popup>
+
+      <Filters></Filters>
 
       <v-container fluid>
         <v-card class="py-5">
+          <v-btn @click="add()" dark absolute top right fab color="indigo">
+            <v-icon dark>add</v-icon>
+          </v-btn>
           <v-layout row>
             <v-flex lg10 offset-lg1 pa-1>
-              <v-tabs v-model="active" color="cyan" dark slider-color="yellow">
-                <v-tab v-for="(tab, index) in tabNames" :key="index">{{tab}}</v-tab>
-                <v-tab-item>
-                  <v-content class="mt-5">
-                    <v-container fluid>
-                      <List :listName="'Provisioned'" @edit="edit"></List>
-                    </v-container>
-                  </v-content>
-                </v-tab-item>
-
-                <v-tab-item>
-                  <v-content class="mt-5">
-                    <v-container fluid>
-                      <List :listName="'Discovered'" @add="add"></List>
-                    </v-container>
-                  </v-content>
-                </v-tab-item>
-              </v-tabs>
+              <v-content class="mt-5">
+                <v-container fluid>
+                  <List :listName="'Devices'" @edit="edit"></List>
+                </v-container>
+              </v-content>
             </v-flex>
           </v-layout>
         </v-card>
@@ -39,6 +30,7 @@
 <script>
 import List from "./List";
 import Popup from "./Popup";
+import Filters from "./Filter";
 
 export default {
   data() {
@@ -46,8 +38,7 @@ export default {
       dialog: false,
       popupName: "",
       dialogId: "",
-      tabNames: ["Provisioned", "Discovered"],
-      active:"",
+      active: ""
     };
   },
   methods: {
@@ -68,7 +59,8 @@ export default {
   },
   components: {
     List,
-    Popup
+    Popup,
+    Filters
   }
 };
 </script>
