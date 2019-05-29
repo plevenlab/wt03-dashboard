@@ -10,7 +10,7 @@
         <td class="text-xs-left">{{ props.item.device }}</td>
         <td class="text-xs-left">{{ props.item.chip_id }}</td>
         <td class="text-xs-left">{{ props.item.wifi_mac }}</td>
-        <td class="text-xs-left">{{ props.item.state_id }}</td>
+        <td class="text-xs-left">{{ props.item.state.name }}</td>
         <td class="text-xs-left">{{ props.item.created_at }}</td>
         <td class="text-xs-left">{{ props.item.updated_at }}</td>
 
@@ -19,7 +19,7 @@
             <v-icon dark>remove</v-icon>
           </v-btn>
 
-          <v-btn v-if="listName == 'Devices'" fab dark small color="teal" @click="edit(props.item.id)">
+          <v-btn v-if="listName == 'Devices'" fab dark small color="teal" @click="edit(props.item)">
             <v-icon dark>edit</v-icon>
           </v-btn>
 
@@ -119,22 +119,22 @@ export default {
 
       axios
         .get("/devices")
-        .then(function(response) {
+        .then(function (response) {
           // handle success
           console.log(response);
           self.devices = response.data;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           // handle error
           console.log(error);
         });
     },
-    edit(id) {
-      this.$emit("edit", id);
+    edit(item) {
+      this.$emit("edit", item);
     },
     add(id) {
       console.log(1);
-      
+
       this.$emit("add", id);
     }
   },

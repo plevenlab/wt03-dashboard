@@ -1,7 +1,13 @@
 <template>
   <div>
     <v-app>
-      <Popup :id="dialogId" :open="dialog" :name="popupName" @close="closeDialog()"></Popup>
+      <Popup
+        :id="dialogId"
+        :open="dialog"
+        :name="popupName"
+        :deviceData="deviceData"
+        @close="closeDialog()"
+      ></Popup>
 
       <Filters></Filters>
 
@@ -38,23 +44,30 @@ export default {
       dialog: false,
       popupName: "",
       dialogId: "",
-      active: ""
+      active: "",
+      deviceData: {}
     };
   },
   methods: {
-    openDialog(name, id) {
+    openDialog(name, data) {
       this.popupName = name;
       this.dialog = true;
-      this.dialogId = id;
+      if (data !== null) {
+        this.dialogId = data.id;
+        this.deviceData = data;
+      }
+      else {
+        this.deviceData = {};
+      }
     },
     closeDialog() {
       this.dialog = false;
     },
-    edit(id) {
-      this.openDialog("Edit", id);
+    edit(data) {
+      this.openDialog("Edit", data);
     },
-    add(id) {
-      this.openDialog("Add", id);
+    add() {
+      this.openDialog("Add");
     }
   },
   components: {

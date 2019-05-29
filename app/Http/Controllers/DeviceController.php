@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Device;
+use Validator;
 
 class DeviceController extends Controller
 {
@@ -33,11 +34,23 @@ class DeviceController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'address' => 'required',
+            'manufacturer' => 'required',
+            'device' => 'required',
+            'chip_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
         $data = $request->all();
         $device = new Device();
         $device->fill($data);
+        $device->save();
 
-        return $device->isValid();
+        return response()->json(['success' => $device], 201);
     }
 
     /**
@@ -71,11 +84,23 @@ class DeviceController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'address' => 'required',
+            'manufacturer' => 'required',
+            'device' => 'required',
+            'chip_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
         $data = $request->all();
         $device = Device::find($id);
         $device->fill($data);
+        $device->save();
 
-        return $device->isValid();
+        return response()->json(['success' => $device], 200);
     }
 
     /**

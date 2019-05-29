@@ -1894,8 +1894,8 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
         console.log(error);
       });
     },
-    edit: function edit(id) {
-      this.$emit("edit", id);
+    edit: function edit(item) {
+      this.$emit("edit", item);
     },
     add: function add(id) {
       console.log(1);
@@ -1950,6 +1950,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -1959,23 +1965,30 @@ __webpack_require__.r(__webpack_exports__);
       dialog: false,
       popupName: "",
       dialogId: "",
-      active: ""
+      active: "",
+      deviceData: {}
     };
   },
   methods: {
-    openDialog: function openDialog(name, id) {
+    openDialog: function openDialog(name, data) {
       this.popupName = name;
       this.dialog = true;
-      this.dialogId = id;
+
+      if (data !== null) {
+        this.dialogId = data.id;
+        this.deviceData = data;
+      } else {
+        this.deviceData = {};
+      }
     },
     closeDialog: function closeDialog() {
       this.dialog = false;
     },
-    edit: function edit(id) {
-      this.openDialog("Edit", id);
+    edit: function edit(data) {
+      this.openDialog("Edit", data);
     },
-    add: function add(id) {
-      this.openDialog("Add", id);
+    add: function add() {
+      this.openDialog("Add");
     }
   },
   components: {
@@ -2046,20 +2059,13 @@ __webpack_require__.r(__webpack_exports__);
 var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["open", "name", "id"],
+  props: ["open", "name", "id", "deviceData"],
   data: function data() {
     return {
       dialog: false,
       notifications: false,
       sound: false,
-      widgets: false,
-      deviceName: "",
-      address: "",
-      device: "",
-      status_id: "",
-      chip_id: "",
-      wifi_mac: "",
-      manufacturer: ""
+      widgets: false
     };
   },
   computed: {
@@ -2070,6 +2076,7 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
   watch: {
     open: function open(val) {
       this.dialog = val;
+      console.log('deviceData: ', this.deviceData);
     }
   },
   methods: {
@@ -2079,19 +2086,20 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
     },
     save: function save() {
       var self = this;
-      axios.post("/devices", {
-        address: self.address,
-        name: self.name,
-        device: self.device,
-        state_id: self.status_id ? self.status_id : self.status,
-        manufacturer: self.manufacturer,
-        wifi_mac: self.wifi_mac,
-        chip_id: self.chip_id
-      }).then(function (res) {
-        console.log(res);
-      })["catch"](function (err) {
-        console.log(err);
-      });
+
+      if (this.name === "Add") {
+        axios.post("/devices", this.deviceData).then(function (res) {
+          console.log(res);
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      } else if (this.name === 'Edit') {
+        axios.put("/devices/" + this.id, this.deviceData).then(function (res) {
+          console.log(res);
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      }
     }
   }
 });
@@ -38093,7 +38101,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("td", { staticClass: "text-xs-left" }, [
-                  _vm._v(_vm._s(props.item.state_id))
+                  _vm._v(_vm._s(props.item.state.name))
                 ]),
                 _vm._v(" "),
                 _c("td", { staticClass: "text-xs-left" }, [
@@ -38133,7 +38141,7 @@ var render = function() {
                             },
                             on: {
                               click: function($event) {
-                                return _vm.edit(props.item.id)
+                                return _vm.edit(props.item)
                               }
                             }
                           },
@@ -38207,7 +38215,12 @@ var render = function() {
         "v-app",
         [
           _c("Popup", {
-            attrs: { id: _vm.dialogId, open: _vm.dialog, name: _vm.popupName },
+            attrs: {
+              id: _vm.dialogId,
+              open: _vm.dialog,
+              name: _vm.popupName,
+              deviceData: _vm.deviceData
+            },
             on: {
               close: function($event) {
                 return _vm.closeDialog()
@@ -38396,11 +38409,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { label: "Name" },
                             model: {
-                              value: _vm.deviceName,
+                              value: _vm.deviceData.name,
                               callback: function($$v) {
-                                _vm.deviceName = $$v
+                                _vm.$set(_vm.deviceData, "name", $$v)
                               },
-                              expression: "deviceName"
+                              expression: "deviceData.name"
                             }
                           })
                         ],
@@ -38414,11 +38427,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { label: "Address" },
                             model: {
-                              value: _vm.address,
+                              value: _vm.deviceData.address,
                               callback: function($$v) {
-                                _vm.address = $$v
+                                _vm.$set(_vm.deviceData, "address", $$v)
                               },
-                              expression: "address"
+                              expression: "deviceData.address"
                             }
                           })
                         ],
@@ -38432,11 +38445,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { label: "Device" },
                             model: {
-                              value: _vm.device,
+                              value: _vm.deviceData.device,
                               callback: function($$v) {
-                                _vm.device = $$v
+                                _vm.$set(_vm.deviceData, "device", $$v)
                               },
-                              expression: "device"
+                              expression: "deviceData.device"
                             }
                           })
                         ],
@@ -38450,11 +38463,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { label: "Chip Id" },
                             model: {
-                              value: _vm.chip_id,
+                              value: _vm.deviceData.chip_id,
                               callback: function($$v) {
-                                _vm.chip_id = $$v
+                                _vm.$set(_vm.deviceData, "chip_id", $$v)
                               },
-                              expression: "chip_id"
+                              expression: "deviceData.chip_id"
                             }
                           })
                         ],
@@ -38468,11 +38481,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { label: "Manufacturer" },
                             model: {
-                              value: _vm.manufacturer,
+                              value: _vm.deviceData.manufacturer,
                               callback: function($$v) {
-                                _vm.manufacturer = $$v
+                                _vm.$set(_vm.deviceData, "manufacturer", $$v)
                               },
-                              expression: "manufacturer"
+                              expression: "deviceData.manufacturer"
                             }
                           })
                         ],
@@ -38486,11 +38499,11 @@ var render = function() {
                           _c("v-text-field", {
                             attrs: { label: "wifi_mac" },
                             model: {
-                              value: _vm.wifi_mac,
+                              value: _vm.deviceData.wifi_mac,
                               callback: function($$v) {
-                                _vm.wifi_mac = $$v
+                                _vm.$set(_vm.deviceData, "wifi_mac", $$v)
                               },
-                              expression: "wifi_mac"
+                              expression: "deviceData.wifi_mac"
                             }
                           })
                         ],
@@ -77068,8 +77081,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\pleven_lab\wt03-dashboard\wt03-dashboard\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\pleven_lab\wt03-dashboard\wt03-dashboard\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\Projects\Docker\wt03-dashboard-docker\data\nginx\www\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\Projects\Docker\wt03-dashboard-docker\data\nginx\www\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

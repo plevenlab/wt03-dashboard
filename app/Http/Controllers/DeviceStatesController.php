@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\DeviceState;
+use Validator;
 
 class DeviceStatesController extends Controller
 {
@@ -33,11 +34,20 @@ class DeviceStatesController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'description' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
         $data = $request->all();
         $deviceState = new DeviceState();
         $deviceState->fill($data);
+        $deviceState->save();
 
-        return $deviceState->isValid();
+        return response()->json(['success' => $deviceState], 201);
     }
 
     /**
@@ -71,11 +81,20 @@ class DeviceStatesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'description' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 400);
+        }
+
         $data = $request->all();
         $deviceState = DeviceState::find($id);
         $deviceState->fill($data);
+        $deviceState->save();
 
-        return $deviceState->isValid();
+        return response()->json(['success' => $deviceState], 200);
     }
 
     /**
