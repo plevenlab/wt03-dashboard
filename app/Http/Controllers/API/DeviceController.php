@@ -7,12 +7,18 @@ use App\Models\Device;
 
 class DeviceController extends Controller
 {
-    public function getDevices($chip_id = false)
+    public function getDevices()
     {
-        if ($chip_id) {
-            return Device::where('chip_id', $chip_id)->first();
-        } else {
-            return Device::with('state')->get();
-        }
+        return Device::with('state')->get();
+    }
+
+    public function getDeviceById($id)
+    {
+        return Device::with('state')->get()->find($id);
+    }
+
+    public function getDeviceByMac($mac)
+    {
+        return Device::with('state')->where('wifi_mac', $mac)->get()->first();
     }
 }
