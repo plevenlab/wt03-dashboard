@@ -9,7 +9,7 @@
         @close="closeDialog()"
       ></Popup>
 
-      <Filters></Filters>
+      <!-- <Filters></Filters> -->
 
       <v-container fluid>
         <v-card class="py-5">
@@ -52,19 +52,19 @@ export default {
     openDialog(name, data) {
       this.popupName = name;
       this.dialog = true;
-      if (data !== null) {
+
+      if (data) {
         this.dialogId = data.id;
         this.deviceData = data;
-      }
-      else {
+      } else {
         this.deviceData = {};
       }
     },
     closeDialog() {
       this.dialog = false;
     },
-    edit(data) {
-      this.openDialog("Edit", data);
+    edit(item) {
+      this.openDialog("Edit", item);
     },
     add() {
       this.openDialog("Add");

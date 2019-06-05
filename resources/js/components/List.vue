@@ -43,63 +43,63 @@ export default {
         {
           text: "id",
           align: "left",
-          sortable: false,
+          sortable: true,
           value: "id"
         },
 
         {
           text: "name",
           align: "left",
-          sortable: false,
+          sortable: true,
           value: "name"
         },
 
         {
           text: "address",
           align: "left",
-          sortable: false,
+          sortable: true,
           value: "address"
         },
 
         {
           text: "device",
           align: "left",
-          sortable: false,
+          sortable: true,
           value: "device"
         },
 
         {
           text: "chip_id",
           align: "left",
-          sortable: false,
+          sortable: true,
           value: "chip_id"
         },
 
         {
           text: "wifi_mac",
           align: "left",
-          sortable: false,
+          sortable: true,
           value: "wifi_mac"
         },
 
         {
           text: "status",
           align: "left",
-          sortable: false,
+          sortable: true,
           value: "status"
         },
 
         {
           text: "created_at",
           align: "left",
-          sortable: false,
+          sortable: true,
           value: "created_at"
         },
 
         {
           text: "updated_at",
           align: "left",
-          sortable: false,
+          sortable: true,
           value: "updated_at"
         },
 
@@ -133,8 +133,6 @@ export default {
       this.$emit("edit", item);
     },
     add(id) {
-      console.log(1);
-
       this.$emit("add", id);
     }
   },
