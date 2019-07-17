@@ -9,6 +9,8 @@ import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 
+import store from './store/index';
+
 require('./bootstrap');
 
 window.Vue = require('vue');
@@ -36,4 +38,5 @@ Vue.component('page', require('./components/Page.vue').default);
 
 const app = new Vue({
     el: '#app',
+    store
 });

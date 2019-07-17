@@ -109,25 +109,18 @@ export default {
           sortable: false,
           value: "action"
         }
-      ],
-      devices: []
+      ]
+      // devices: []
     };
+  },
+  computed: {
+    devices() {
+      return this.$store.state.devices.data;
+    }
   },
   methods: {
     getDevices() {
-      let self = this;
-
-      axios
-        .get("/devices")
-        .then(function (response) {
-          // handle success
-          console.log(response);
-          self.devices = response.data;
-        })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        });
+      this.$store.dispatch("devices/getDevices");
     },
     edit(item) {
       this.$emit("edit", item);
